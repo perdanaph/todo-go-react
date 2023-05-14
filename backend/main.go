@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 // define struct
@@ -18,6 +19,11 @@ type Todo struct {
 
 func main() {
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	todos := []Todo{}
 
@@ -64,10 +70,7 @@ func main() {
 				break
 			}
 		}
-		return c.Status(200).JSON(&fiber.Map{
-			"success": true,
-			"todos":   todos,
-		})
+		return c.Status(200).JSON(todos)
 	})
 
 	log.Fatal(app.Listen(":8080"))
