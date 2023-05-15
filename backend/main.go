@@ -42,19 +42,12 @@ func main() {
 
 		todo.ID = len(todos) + 1
 		todos = append(todos, *todo)
-		return c.Status(201).JSON(&fiber.Map{
-			"success": true,
-			"message": "Data berhasil ditambah",
-			"todo":    todo,
-		})
+		return c.Status(201).JSON(todos)
 	})
 
 	// endpoint get todo
 	app.Get("/api/todos", func(c *fiber.Ctx) error {
-		return c.Status(200).JSON(&fiber.Map{
-			"success": true,
-			"todos":   todos,
-		})
+		return c.Status(200).JSON(todos)
 	})
 
 	// endpont patch todo

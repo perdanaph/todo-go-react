@@ -6,15 +6,10 @@ import AddTodo from './components/AddTodo';
 import { IconCheck } from '@tabler/icons-react';
 
 export interface Todo {
-  success: boolean;
-  todos: [
-    {
-      id: number;
-      title: string;
-      body: string;
-      isDone: boolean;
-    }
-  ];
+  id: number;
+  title: string;
+  body: string;
+  done: boolean;
 }
 
 export const BASEURL = 'http://localhost:8080';
@@ -23,7 +18,7 @@ const fetcher = (endpoint: string) =>
   fetch(`${BASEURL}/${endpoint}`).then(response => response.json());
 
 function App() {
-  const { data, mutate } = useSWR<Todo>('api/todos', fetcher);
+  const { data, mutate } = useSWR<Todo[]>('api/todos', fetcher);
 
   async function updateTodoMarkDone(id: number) {
     const updated = await fetch(`${BASEURL}/api/todos/${id}/done`, {
@@ -43,13 +38,20 @@ function App() {
           })}
         >
           <List spacing="xs" size="sm" mb={12} center>
-            {data?.todos.map(todo => {
+            {data?.map(todo => {
               return (
                 <List.Item
+                  className="list-todo"
+                  sx={styles => ({
+                    cursor: 'pointer',
+                    ':hover': {
+                      fontWeight: 'bold',
+                    },
+                  })}
                   onClick={() => updateTodoMarkDone(todo.id)}
                   key={`todo__list__${todo.id}`}
                   icon={
-                    todo.isDone ? (
+                    todo.done ? (
                       <ThemeIcon color="teal" size={24} radius="xl">
                         <IconCheck size={20} />
                       </ThemeIcon>

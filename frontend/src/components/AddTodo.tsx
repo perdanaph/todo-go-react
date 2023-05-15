@@ -4,7 +4,7 @@ import { Modal, Group, Button, TextInput, Textarea } from '@mantine/core';
 import { BASEURL, Todo } from '../App';
 import { KeyedMutator } from 'swr';
 
-function AddTodo({ mutate }: { mutate: KeyedMutator<Todo> }) {
+function AddTodo({ mutate }: { mutate: KeyedMutator<Todo[]> }) {
   const [open, setOpen] = useState(false);
 
   const form = useForm({
